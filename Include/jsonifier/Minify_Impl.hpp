@@ -23,81 +23,84 @@
 /// Feb 3, 2023
 #pragma once
 
-#include <jsonifier/JsonStructuralIterator.hpp>
 #include <jsonifier/Minifier.hpp>
 #include <jsonifier/Simd.hpp>
 
 namespace jsonifier_internal {
 
-	template<typename derived_type> struct minify_impl {
-		template<const minify_options_internal<derived_type>& options, jsonifier::concepts::string_t string_type, typename iterator_type>
-		JSONIFIER_INLINE static void impl(iterator_type&& iter, string_type& out, uint64_t& index) noexcept {
-			auto previousPtr = iter.operator->();
+	template<typename derived_type> struct minify_impl : public writer<> {
+		template<jsonifier::concepts::string_t string_type, typename minifier_type, typename iterator>
+		JSONIFIER_ALWAYS_INLINE static void impl(iterator& iter, string_type&& out, uint64_t& index, minifier_type& minifier) noexcept {
+			auto previousPtr = *iter;
 			int64_t currentDistance{};
 
 			++iter;
 
-			while (iter) {
+			while (*iter) {
+				for (uint64_t x = 0; x < sixtyFourBitsPerStep; ++x) {
+					jsonifierPrefetchImpl(*iter + bitsPerStep + (64 * x));
+				}
+
 				switch (asciiClassesMap[static_cast<uint8_t>(*previousPtr)]) {
 					[[likely]] case json_structural_type::String: {
-						currentDistance = iter.operator->() - previousPtr;
+						currentDistance = *iter - previousPtr;
 						while (whitespaceTable[static_cast<uint8_t>(previousPtr[--currentDistance])]) {
 						}
 						auto newSize = static_cast<uint64_t>(currentDistance) + 1;
 						if (currentDistance > 0) [[likely]] {
-							writeCharactersUnchecked(out, previousPtr, newSize, index);
+							writeCharacters<false>(out, previousPtr, newSize, index);
 						} else {
 							static constexpr auto sourceLocation{ std::source_location::current() };
-							options.minifierPtr->getErrors().emplace_back(error::constructError<sourceLocation, error_classes::Minifying, minify_errors::Invalid_String_Length>(
-								static_cast<int64_t>(iter - iter.getRootPtr()), static_cast<int64_t>(iter.getEndPtr() - iter.getRootPtr()), iter.getRootPtr()));
+							minifier.getErrors().emplace_back(error::constructError<sourceLocation, error_classes::Minifying, minify_errors::Invalid_String_Length>(
+								static_cast<int64_t>(getUnderlyingPtr(iter) - minifier.rootIter), static_cast<int64_t>(minifier.endIter - minifier.rootIter), minifier.rootIter));
 							return;
 						}
 						break;
 					}
 					[[unlikely]] case json_structural_type::Comma:
-						writeCharacterUnchecked<','>(out, index);
+						writeCharacter<',', false>(out, index);
 						break;
 					[[likely]] case json_structural_type::Number: {
 						currentDistance = 0;
-						while (!whitespaceTable[static_cast<uint8_t>(previousPtr[++currentDistance])] && ((previousPtr + currentDistance) < iter.operator->())) {
+						while (!whitespaceTable[static_cast<uint8_t>(previousPtr[++currentDistance])] && ((previousPtr + currentDistance) < (*iter))) {
 						}
 						if (currentDistance > 0) [[likely]] {
-							writeCharactersUnchecked(out, previousPtr, static_cast<uint64_t>(currentDistance), index);
+							writeCharacters<false>(out, previousPtr, static_cast<uint64_t>(currentDistance), index);
 						} else {
 							static constexpr auto sourceLocation{ std::source_location::current() };
-							options.minifierPtr->getErrors().emplace_back(error::constructError<sourceLocation, error_classes::Minifying, minify_errors::Invalid_Number_Value>(
-								static_cast<int64_t>(iter - iter.getRootPtr()), static_cast<int64_t>(iter.getEndPtr() - iter.getRootPtr()), iter.getRootPtr()));
+							minifier.getErrors().emplace_back(error::constructError<sourceLocation, error_classes::Minifying, minify_errors::Invalid_Number_Value>(
+								static_cast<int64_t>(getUnderlyingPtr(iter) - minifier.rootIter), static_cast<int64_t>(minifier.endIter - minifier.rootIter), minifier.rootIter));
 							return;
 						}
 						break;
 					}
 					[[unlikely]] case json_structural_type::Colon:
-						writeCharacterUnchecked<0x3A>(out, index);
+						writeCharacter<0x3A, false>(out, index);
 						break;
 					[[unlikely]] case json_structural_type::Array_Start:
-						writeCharacterUnchecked<'['>(out, index);
+						writeCharacter<'[', false>(out, index);
 						break;
 					[[unlikely]] case json_structural_type::Array_End:
-						writeCharacterUnchecked<']'>(out, index);
+						writeCharacter<']', false>(out, index);
 						break;
 					[[unlikely]] case json_structural_type::Null: {
-						writeCharactersUnchecked(out, nullString.data(), nullString.size(), index);
+						writeCharacters<"null", false>(out, index);
 						break;
 					}
 					[[unlikely]] case json_structural_type::Bool: {
 						if (*previousPtr == 't') {
-							writeCharactersUnchecked(out, trueString.data(), trueString.size(), index);
+							writeCharacters<"true", false>(out, index);
 							break;
 						} else {
-							writeCharactersUnchecked(out, falseString.data(), falseString.size(), index);
+							writeCharacters<"false", false>(out, index);
 							break;
 						}
 					}
 					[[unlikely]] case json_structural_type::Object_Start:
-						writeCharacterUnchecked<'{'>(out, index);
+						writeCharacter<'{', false>(out, index);
 						break;
 					[[unlikely]] case json_structural_type::Object_End:
-						writeCharacterUnchecked<'}'>(out, index);
+						writeCharacter<'}', false>(out, index);
 						break;
 					[[unlikely]] case json_structural_type::Unset:
 					[[unlikely]] case json_structural_type::Error:
@@ -105,15 +108,17 @@ namespace jsonifier_internal {
 						[[fallthrough]];
 					[[unlikely]] default: {
 						static constexpr auto sourceLocation{ std::source_location::current() };
-						options.minifierPtr->getErrors().emplace_back(error::constructError<sourceLocation, error_classes::Minifying, minify_errors::Incorrect_Structural_Index>(
-							static_cast<int64_t>(iter - iter.getRootPtr()), static_cast<int64_t>(iter.getEndPtr() - iter.getRootPtr()), iter.getRootPtr()));
+						minifier.getErrors().emplace_back(error::constructError<sourceLocation, error_classes::Minifying, minify_errors::Incorrect_Structural_Index>(
+							static_cast<int64_t>(getUnderlyingPtr(iter) - minifier.rootIter), static_cast<int64_t>(minifier.endIter - minifier.rootIter), minifier.rootIter));
 						return;
 					}
 				}
-				previousPtr = iter.operator->();
+				previousPtr = (*iter);
 				++iter;
 			}
-			writeCharacterUnchecked(*previousPtr, out, index);
+			if (previousPtr) {
+				writeCharacter<false>(*previousPtr, out, index);
+			}
 		}
 	};
 
