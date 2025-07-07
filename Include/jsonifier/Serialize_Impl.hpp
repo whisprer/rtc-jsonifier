@@ -1,27 +1,3 @@
-
-/*
-	MIT License
-
-	Copyright (c) 2023 RealTimeChris
-
-	Permission is hereby granted, free of charge, to any person obtaining a copy of this
-	software and associated documentation files (the "Software"), to deal in the Software
-	without restriction, including without limitation the rights to use, copy, modify, merge,
-	publish, distribute, sublicense, and/or sell copies of the Software, and to permit
-	persons to whom the Software is furnished to do so, subject to the following conditions:
-
-	The above copyright notice and this permission notice shall be included in all copies or
-	substantial portions of the Software.
-
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-	INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-	PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
-	FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-	OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-	DEALINGS IN THE SOFTWARE.
-*/
-/// https://github.com/RealTimeChris/jsonifier
-/// Feb 20, 2023
 #pragma once
 
 #include <jsonifier/Serializer.hpp>
@@ -42,17 +18,15 @@ namespace jsonifier_internal {
 			writer<options>::template writeObjectExit<numMembers>(std::forward<buffer_type>(buffer), std::forward<serialize_pair_t>(serializePair));
 		}
 
-		template<size_t currentIndex, size_t maxIndex, jsonifier::concepts::jsonifier_value_t value_type, jsonifier::concepts::buffer_like buffer_type, typename serialize_pair_t>
-		JSONIFIER_INLINE static void serializeObjects(value_type&& value, buffer_type&& buffer, serialize_pair_t&& serializePair) noexcept {
-			if constexpr (currentIndex < maxIndex) {
-				static constexpr auto subTuple = std::get<currentIndex>(coreTupleV<value_type>);
-				static constexpr auto key		= subTuple.view();
-				if constexpr (jsonifier::concepts::has_excluded_keys<value_type>) {
-					auto& keys = value.jsonifierExcludedKeys;
-					if (keys.find(static_cast<typename std::remove_reference_t<decltype(keys)>::key_type>(key)) != keys.end()) [[likely]] {
-						return serializeObjects<currentIndex + 1, maxIndex>(std::forward<value_type>(value), std::forward<buffer_type>(buffer),
-							std::forward<serialize_pair_t>(serializePair));
-					}
+			template<time_stamp_t value_type_new, typename derived_type>
+			struct serialize_impl<value_type_new, derived_type> {
+    			template<time_stamp_t value_type, jsonifier::concepts::buffer_like iterator>
+    			void impl(value_type&& value, iterator&& iter, uint64_t& index) {
+        			jsonifier::string s{ static_cast<jsonifier::string>(value) };
+        			serializer<derived_type>::impl(s, iter, index);
+    			}
+			};
+
 				}
 				static constexpr auto memberPtr = subTuple.ptr();
 				static constexpr auto unQuotedKey{ string_literal{ "\"" } + stringLiteralFromView<key.size()>(key) };
