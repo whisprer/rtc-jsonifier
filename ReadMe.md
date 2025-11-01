@@ -1,34 +1,136 @@
-# Jsonifier
-![Commit Activity](https://img.shields.io/github/commit-activity/y/realtimechris/jsonifier?color=999EE0&label=Commits&style=plastic)
-![Lines of Code](https://tokei.rs/b1/github/RealTimeChris/Jsonifier-Code-Only?color=light-blue&label=Lines%20Of%20Code%20&style=plastic)
+[README.md]
 
-### A few classes for validating, serializing, parsing, prettifying, and minifying objects into/from JSON strings - very rapidly.
-### ***It achieves this through the usage of [simd-instructions](https://github.com/RealTimeChris/Jsonifier/blob/dev/Include/jsonifier/Simd.hpp) as well as compile-time [hash-maps](https://github.com/RealTimeChris/Jsonifier/blob/main/Include/jsonifier/HashMap.hpp) for the keys of the data being parsed.***
-### [Benchmarks](https://github.com/RealTimeChris/Json-Performance)
-----
+# Rtc-Jsonifier
 
-### Compiler Support
-----
-![MSVC](https://img.shields.io/github/actions/workflow/status/RealTimeChris/Jsonifier/MSVC-Windows.yml?style=plastic&logo=microsoft&logoColor=green&label=MSVC&labelColor=pewter&color=blue&branch=dev)
-![GCC](https://img.shields.io/github/actions/workflow/status/RealTimeChris/Jsonifier/GCC-Ubuntu.yml?style=plastic&logo=linux&logoColor=green&label=GCC&labelColor=pewter&color=blue&branch=dev)
-![CLANG](https://img.shields.io/github/actions/workflow/status/RealTimeChris/Jsonifier/CLANG-MacOS.yml?style=plastic&logo=apple&logoColor=green&label=CLANG&labelColor=pewter&color=blue&branch=dev)
+<p align="center">
+  <a href="https://github.com/whisprer/rtc-jsonifier/releases"> 
+    <img src="https://img.shields.io/github/v/release/whisprer/rtc-jsonifier?color=4CAF50&label=release" alt="Release Version"> 
+  </a>
+  <a href="https://github.com/whisprer/rtc-jsonifier/actions"> 
+    <img src="https://img.shields.io/github/actions/workflow/status/whisprer/rtc-jsonifier/lint-and-plot.yml?label=build" alt="Build Status"> 
+  </a>
+</p>
 
-### Operating System Support
-----
-![Windows](https://img.shields.io/github/actions/workflow/status/RealTimeChris/Jsonifier/MSVC-Windows.yml?style=plastic&logo=microsoft&logoColor=green&label=Windows&labelColor=pewter&color=blue&branch=dev)
-![Linux](https://img.shields.io/github/actions/workflow/status/RealTimeChris/Jsonifier/GCC-Ubuntu.yml?style=plastic&logo=linux&logoColor=green&label=Linux&labelColor=pewter&color=blue&branch=dev)
-![Mac](https://img.shields.io/github/actions/workflow/status/RealTimeChris/Jsonifier/CLANG-MacOS.yml?style=plastic&logo=apple&logoColor=green&label=MacOS&labelColor=pewter&color=blue&branch=dev)
+![Commits](https://img.shields.io/github/commit-activity/m/whisprer/rtc-jsonifier?label=commits) 
+![Last Commit](https://img.shields.io/github/last-commit/whisprer/rtc-jsonifier) 
+![Issues](https://img.shields.io/github/issues/whisprer/rtc-jsonifier) 
+[![Version](https://img.shields.io/badge/version-3.1.1-blue.svg)](https://github.com/whisprer/rtc-jsonifier) 
+[![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-lightgrey.svg)](https://www.microsoft.com/windows)
+[![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-### Usage Guide:
-----
-- ## [Installation](https://github.com/RealTimeChris/Jsonifier/blob/main/Documentation/Installation.md)
-- ## [Reflection](https://github.com/RealTimeChris/Jsonifier/blob/main/Documentation/Reflection.md)
-- ## [Optimizing For Minified Json](https://github.com/RealTimeChris/Jsonifier/blob/main/Documentation/Optimizing_For_Minified_Json.md)
-- ## [Serializing-Parsing](https://github.com/RealTimeChris/Jsonifier/blob/main/Documentation/Usage_Serializing_Parsing.md)
-- ## [Validating](https://github.com/RealTimeChris/Jsonifier/blob/main/Documentation/Validating.md)
-- ## [Prettifying](https://github.com/RealTimeChris/Jsonifier/blob/main/Documentation/Prettifying.md)
-- ## [Minifying](https://github.com/RealTimeChris/Jsonifier/blob/main/Documentation/Minifying.md)
-- ## [Error Handling](https://github.com/RealTimeChris/Jsonifier/blob/main/Documentation/Errors.md)
-- ## [CPU Architecture Selection](https://github.com/RealTimeChris/Jsonifier/blob/main/Documentation/CPU_Architecture_Selection.md)
-- ## [Excluding Keys at Runtime](https://github.com/RealTimeChris/Jsonifier/blob/main/Documentation/Excluding_Keys.md)
-- ## [Custom JSON Parsing/Serializing Behavior](https://github.com/RealTimeChris/Jsonifier/blob/main/Documentation/Custom_Parsing_And_Serializing.md)
+<p align="center">
+  <img src="rtc-jsonifier-banner.png" width="850" alt="Rtc-Jsonifier Banner"> 
+</p>
+
+
+---
+
+[README.md]
+
+# Rtc-Jsonifier
+
+<p align="center">
+  <a href="https://github.com/whisprer/rtc-jsonifier/releases"> 
+    <img src="https://img.shields.io/github/v/release/whisprer/rtc-jsonifier?color=4CAF50&label=release" alt="Release Version"> 
+  </a>
+  <a href="https://github.com/whisprer/rtc-jsonifier/actions"> 
+    <img src="https://img.shields.io/github/actions/workflow/status/whisprer/rtc-jsonifier/lint-and-plot.yml?label=build" alt="Build Status"> 
+  </a>
+</p>
+
+![Commits](https://img.shields.io/github/commit-activity/m/whisprer/rtc-jsonifier?label=commits) 
+![Last Commit](https://img.shields.io/github/last-commit/whisprer/rtc-jsonifier) 
+![Issues](https://img.shields.io/github/issues/whisprer/rtc-jsonifier) 
+[![Version](https://img.shields.io/badge/version-3.1.1-blue.svg)](https://github.com/whisprer/rtc-jsonifier) 
+[![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-lightgrey.svg)](https://www.microsoft.com/windows)
+[![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
+<p align="center">
+  <img src="rtc-jsonifier-banner.png" width="850" alt="Rtc-Jsonifier Banner"> 
+</p>
+
+
+---
+
+[README.md]
+
+# Rtc-Jsonifier
+
+<p align="center">
+  <a href="https://github.com/whisprer/rtc-jsonifier/releases"> 
+    <img src="https://img.shields.io/github/v/release/whisprer/rtc-jsonifier?color=4CAF50&label=release" alt="Release Version"> 
+  </a>
+  <a href="https://github.com/whisprer/rtc-jsonifier/actions"> 
+    <img src="https://img.shields.io/github/actions/workflow/status/whisprer/rtc-jsonifier/lint-and-plot.yml?label=build" alt="Build Status"> 
+  </a>
+</p>
+
+![Commits](https://img.shields.io/github/commit-activity/m/whisprer/rtc-jsonifier?label=commits) 
+![Last Commit](https://img.shields.io/github/last-commit/whisprer/rtc-jsonifier) 
+![Issues](https://img.shields.io/github/issues/whisprer/rtc-jsonifier) 
+[![Version](https://img.shields.io/badge/version-3.1.1-blue.svg)](https://github.com/whisprer/rtc-jsonifier) 
+[![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-lightgrey.svg)](https://www.microsoft.com/windows)
+[![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
+<p align="center">
+  <img src="rtc-jsonifier-banner.png" width="850" alt="Rtc-Jsonifier Banner"> 
+</p>
+
+
+---
+
+[README.md]
+
+# rtc-Jsonifier
+
+<p align="center">
+  <a href="https://github.com/whisprer/rtc-Jsonifier/releases"> 
+    <img src="https://img.shields.io/github/v/release/whisprer/rtc-Jsonifier?color=4CAF50&label=release" alt="Release Version"> 
+  </a>
+  <a href="https://github.com/whisprer/rtc-Jsonifier/actions"> 
+    <img src="https://img.shields.io/github/actions/workflow/status/whisprer/rtc-Jsonifier/lint-and-plot.yml?label=build" alt="Build Status"> 
+  </a>
+</p>
+
+![Commits](https://img.shields.io/github/commit-activity/m/whisprer/rtc-Jsonifier?label=commits) 
+![Last Commit](https://img.shields.io/github/last-commit/whisprer/rtc-Jsonifier) 
+![Issues](https://img.shields.io/github/issues/whisprer/rtc-Jsonifier) 
+[![Version](https://img.shields.io/badge/version-3.1.1-blue.svg)](https://github.com/whisprer/rtc-Jsonifier) 
+[![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-lightgrey.svg)](https://www.microsoft.com/windows)
+[![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
+<p align="center">
+  <img src="rtc-Jsonifier-banner.png" width="850" alt="rtc-Jsonifier Banner"> 
+</p>
+
+
+---
+
+[README.md]
+
+# rtc-Jsonifier
+
+<p align="center">
+  <a href="https://github.com/whisprer/rtc-Jsonifier/releases"> 
+    <img src="https://img.shields.io/github/v/release/whisprer/rtc-Jsonifier?color=4CAF50&label=release" alt="Release Version"> 
+  </a>
+  <a href="https://github.com/whisprer/rtc-Jsonifier/actions"> 
+    <img src="https://img.shields.io/github/actions/workflow/status/whisprer/rtc-Jsonifier/lint-and-plot.yml?label=build" alt="Build Status"> 
+  </a>
+</p>
+
+![Commits](https://img.shields.io/github/commit-activity/m/whisprer/rtc-Jsonifier?label=commits) 
+![Last Commit](https://img.shields.io/github/last-commit/whisprer/rtc-Jsonifier) 
+![Issues](https://img.shields.io/github/issues/whisprer/rtc-Jsonifier) 
+[![Version](https://img.shields.io/badge/version-3.1.1-blue.svg)](https://github.com/whisprer/rtc-Jsonifier) 
+[![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-lightgrey.svg)](https://www.microsoft.com/windows)
+[![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
+<p align="center">
+  <img src="rtc-Jsonifier-banner.png" width="850" alt="rtc-Jsonifier Banner"> 
+</p>
